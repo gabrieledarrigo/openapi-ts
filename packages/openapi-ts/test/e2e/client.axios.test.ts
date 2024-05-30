@@ -9,7 +9,7 @@ describe('client.axios', () => {
   beforeAll(async () => {
     cleanup('client/axios')
     await generateClient('client/axios', 'v3', 'legacy/axios', false, 'ApiClient')
-    compileWithTypescript('client/axios')
+    compileWithTypescript('client/axios', {overrides: {compilerOptions: {module: 'esnext', 'moduleResolution': 'nodenext'}}})
     await server.start('client/axios')
   }, 40000)
 

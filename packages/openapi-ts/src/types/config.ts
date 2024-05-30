@@ -189,6 +189,11 @@ export interface UserConfig {
          * The relative location of the output folder
          */
         path: string;
+
+        /**
+         * Add file extension to generated files (e.g. '.js') for moduleResolution compatibility (node16/nodenext)
+         */
+        addFileExtension?: boolean;
       };
   /**
    * Plugins generate artifacts from `input`. By default, we generate SDK

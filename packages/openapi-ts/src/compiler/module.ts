@@ -1,6 +1,7 @@
 import ts from 'typescript';
 
 import { createAsExpression, createTypeReferenceNode } from './types';
+import { getConfig } from '../utils/config';
 import {
   addLeadingComments,
   type Comments,
@@ -19,11 +20,15 @@ export const createExportAllDeclaration = ({
 }: {
   module: string;
 }): ts.ExportDeclaration => {
+  const config = getConfig();
+  const addFileExtension = config.output.addFileExtension;
   const statement = ts.factory.createExportDeclaration(
     undefined,
     false,
     undefined,
-    ots.string(module),
+    ots.string(
+      module.startsWith('./') && addFileExtension ? `${module}.js` : module,
+    ),
   );
   return statement;
 };
@@ -75,6 +80,8 @@ export const createNamedExportDeclarations = ({
   exports: Array<ImportExportItem> | ImportExportItem;
   module: string;
 }): ts.ExportDeclaration => {
+  const config = getConfig();
+  const addFileExtension = config?.output.addFileExtension;
   const exportedTypes = Array.isArray(exports) ? exports : [exports];
   const hasNonTypeExport = exportedTypes.some(
     (item) => typeof item !== 'object' || !item.asType,
@@ -88,7 +95,9 @@ export const createNamedExportDeclarations = ({
     });
   });
   const exportClause = ts.factory.createNamedExports(elements);
-  const moduleSpecifier = ots.string(module);
+  const moduleSpecifier = ots.string(
+    module.startsWith('./') && addFileExtension ? `${module}.js` : module,
+  );
   const statement = ts.factory.createExportDeclaration(
     undefined,
     !hasNonTypeExport,
@@ -182,6 +191,8 @@ export const createNamedImportDeclarations = ({
   imports: Array<ImportExportItem> | ImportExportItem;
   module: string;
 }): ts.ImportDeclaration => {
+  const config = getConfig();
+  const addFileExtension = config?.output.addFileExtension;
   const importedTypes = Array.isArray(imports) ? imports : [imports];
   const hasNonTypeImport = importedTypes.some(
     (item) => typeof item !== 'object' || !item.asType,
@@ -200,7 +211,10 @@ export const createNamedImportDeclarations = ({
     undefined,
     namedBindings,
   );
-  const moduleSpecifier = ots.string(module);
+
+  const moduleSpecifier = ots.string(
+    module.startsWith('./') && addFileExtension ? `${module}.js` : module,
+  );
   const statement = ts.factory.createImportDeclaration(
     undefined,
     importClause,
