@@ -1,7 +1,7 @@
 import ts from 'typescript';
 
-import { createAsExpression, createTypeReferenceNode } from './types';
 import { getConfig } from '../utils/config';
+import { createAsExpression, createTypeReferenceNode } from './types';
 import {
   addLeadingComments,
   type Comments,

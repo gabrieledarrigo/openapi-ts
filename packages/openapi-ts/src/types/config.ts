@@ -150,6 +150,10 @@ export interface UserConfig {
     | string
     | {
         /**
+         * Add file extension to generated files (e.g. '.js') for moduleResolution compatibility (node16/nodenext)
+         */
+        addFileExtension?: boolean;
+        /**
          * Defines casing of the output fields. By default, we preserve `input`
          * values as data transforms incur a performance penalty at runtime.
          *
@@ -185,15 +189,11 @@ export interface UserConfig {
          * @default false
          */
         lint?: Linters | false;
+
         /**
          * The relative location of the output folder
          */
         path: string;
-
-        /**
-         * Add file extension to generated files (e.g. '.js') for moduleResolution compatibility (node16/nodenext)
-         */
-        addFileExtension?: boolean;
       };
   /**
    * Plugins generate artifacts from `input`. By default, we generate SDK
